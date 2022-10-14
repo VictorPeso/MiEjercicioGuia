@@ -34,6 +34,13 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.Longitud = new System.Windows.Forms.RadioButton();
             this.Bonito = new System.Windows.Forms.RadioButton();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.alturaBox = new System.Windows.Forms.TextBox();
+            this.alto = new System.Windows.Forms.RadioButton();
+            this.palindromo = new System.Windows.Forms.RadioButton();
+            this.mayus = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,9 +63,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(130, 144);
+            this.button2.Location = new System.Drawing.Point(116, 201);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(86, 27);
             this.button2.TabIndex = 5;
             this.button2.Text = "Enviar";
             this.button2.UseVisualStyleBackColor = true;
@@ -67,6 +74,11 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.groupBox1.Controls.Add(this.mayus);
+            this.groupBox1.Controls.Add(this.palindromo);
+            this.groupBox1.Controls.Add(this.alto);
+            this.groupBox1.Controls.Add(this.alturaBox);
+            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.Longitud);
             this.groupBox1.Controls.Add(this.Bonito);
             this.groupBox1.Controls.Add(this.label2);
@@ -101,11 +113,82 @@
             this.Bonito.Text = "Dime si mi nombre es bonito";
             this.Bonito.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 48);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(161, 40);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Conectar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(12, 418);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(161, 40);
+            this.button3.TabIndex = 8;
+            this.button3.Text = "Desconectar";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(36, 135);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Altura";
+            // 
+            // alturaBox
+            // 
+            this.alturaBox.Location = new System.Drawing.Point(18, 151);
+            this.alturaBox.Name = "alturaBox";
+            this.alturaBox.Size = new System.Drawing.Size(82, 20);
+            this.alturaBox.TabIndex = 9;
+            // 
+            // alto
+            // 
+            this.alto.AutoSize = true;
+            this.alto.Location = new System.Drawing.Point(116, 114);
+            this.alto.Name = "alto";
+            this.alto.Size = new System.Drawing.Size(98, 17);
+            this.alto.TabIndex = 10;
+            this.alto.TabStop = true;
+            this.alto.Text = "Dime si soy alto";
+            this.alto.UseVisualStyleBackColor = true;
+            // 
+            // palindromo
+            // 
+            this.palindromo.AutoSize = true;
+            this.palindromo.Location = new System.Drawing.Point(116, 137);
+            this.palindromo.Name = "palindromo";
+            this.palindromo.Size = new System.Drawing.Size(180, 17);
+            this.palindromo.TabIndex = 11;
+            this.palindromo.TabStop = true;
+            this.palindromo.Text = "Dime si mi nombre es palíndromo\r\n";
+            this.palindromo.UseVisualStyleBackColor = true;
+            // 
+            // mayus
+            // 
+            this.mayus.AutoSize = true;
+            this.mayus.Location = new System.Drawing.Point(116, 160);
+            this.mayus.Name = "mayus";
+            this.mayus.Size = new System.Drawing.Size(177, 17);
+            this.mayus.TabIndex = 12;
+            this.mayus.TabStop = true;
+            this.mayus.Text = "Dame mi nombre en mayúsculas";
+            this.mayus.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(741, 562);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -124,6 +207,13 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton Longitud;
         private System.Windows.Forms.RadioButton Bonito;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox alturaBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RadioButton alto;
+        private System.Windows.Forms.RadioButton mayus;
+        private System.Windows.Forms.RadioButton palindromo;
     }
 }
 
