@@ -1,4 +1,5 @@
 # Mi Ejercicio Guia
 
 Version con conexión desconexion
-Version Concurrente
+Version concurrente
+Version con exclusion mutua

@@ -7,6 +7,12 @@
 #include <stdio.h>
 #include <pthread.h>
 
+
+int contador;
+
+//Estructura necesaria para acceso excluyente
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 void *AtenderCliente (void *socket)
 {
 	int sock_conn;
@@ -38,7 +44,7 @@ void *AtenderCliente (void *socket)
 		int codigo =  atoi (p);
 		char nombre[20];
 		
-		if (codigo != 0)
+		if ((codigo != 0)&&(codigo != 6))
 		{
 			p = strtok( NULL, "/");
 			strcpy (nombre, p);
@@ -47,6 +53,8 @@ void *AtenderCliente (void *socket)
 		
 		if (codigo == 0)
 			terminar = 1;
+		else if (codigo ==6) 
+			sprintf (respuesta,"%d",contador); 
 		else if (codigo ==1) //piden la longitd del nombre
 			sprintf (respuesta,"%d",strlen (nombre));
 		else if (codigo == 2){
@@ -82,6 +90,10 @@ void *AtenderCliente (void *socket)
 			else
 				strcpy (respuesta,"NO");
 		}
+		else if (codigo == 4)
+		{
+			sprintf (respuesta,"%d", contador);
+		}
 		else{
 			for (int i = 0; nombre[i] != '\0';++i){
 				nombre[i] = toupper(nombre[i]);
@@ -95,6 +107,10 @@ void *AtenderCliente (void *socket)
 			// Enviamos la respuesta
 			write (sock_conn,respuesta, strlen(respuesta));
 		}
+		if ((codigo == 1)||(codigo == 2)||(codigo == 3)||(codigo == 4)||(codigo == 5))
+			pthread_mutex_lock( &mutex ); //No me interrumpas ahora
+			contador=contador+1;
+			pthread_mutex_unlock( &mutex ); //Ya puedes interrumpir
 	}
 	// Se acabo el servicio para este cliente
 	close(sock_conn);
@@ -121,6 +137,8 @@ int main(int argc, char *argv[])
 	//La cola de peticiones pendientes no podr? ser superior a 4
 	if (listen(sock_listen, 4) < 0)
 		printf("Error en el Listen");
+	
+	contador =0;
 	int i;
 	int sockets[100];
 	pthread_t thread;
