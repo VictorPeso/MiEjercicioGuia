@@ -7,6 +7,9 @@
 #include <stdio.h>
 #include <pthread.h>
 
+//Estructura necesaria para acceso excluyente
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 void *AtenderCliente (void *socket)
 {
 	int sock_conn;
@@ -49,12 +52,16 @@ void *AtenderCliente (void *socket)
 			terminar = 1;
 		else if (codigo ==1){ //piden el valor en celius
 			float numero = atof (nombre);
+			pthread_mutex_lock( &mutex ); //No me interrumpas ahora
 			float res = (numero - 32)*0.5556;
+			pthread_mutex_unlock( &mutex ); //No me interrumpas ahora
 			sprintf (respuesta,"%f", res);
 		}
 		else{ //piden el valor en farenheit
 			float numero = atof (nombre);
+			pthread_mutex_lock( &mutex ); //No me interrumpas ahora
 			float res = numero*1.8+32;
+			pthread_mutex_unlock( &mutex ); //No me interrumpas ahora
 			sprintf (respuesta,"%f", res);
 		}
 		

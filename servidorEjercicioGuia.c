@@ -13,6 +13,9 @@ int contador;
 //Estructura necesaria para acceso excluyente
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
+int i;
+int sockets[100];
+
 void *AtenderCliente (void *socket)
 {
 	int sock_conn;
@@ -52,26 +55,24 @@ void *AtenderCliente (void *socket)
 		}
 		
 		if (codigo == 0)
-			terminar = 1;
-		else if (codigo ==6) 
-			sprintf (respuesta,"%d",contador); 
+			terminar = 1; 
 		else if (codigo ==1) //piden la longitd del nombre
-			sprintf (respuesta,"%d",strlen (nombre));
+			sprintf (respuesta,"1/%d",strlen (nombre));
 		else if (codigo == 2){
 			// quieren saber si el nombre es bonito
 			if((nombre[0]=='M') || (nombre[0]=='S'))
-			strcpy (respuesta,"SI");
+			strcpy (respuesta,"2/SI");
 			else
-				strcpy (respuesta,"NO");
+				strcpy (respuesta,"2/NO");
 		}
 		else if (codigo == 3) // decir si es alto
 		{
 			p = strtok( NULL, "/");
 			float altura = atof (p);
 			if (altura > 1.70)
-				sprintf (respuesta, "%s: eres alto", nombre);
+				sprintf (respuesta, "3/%s: eres alto", nombre);
 			else
-				sprintf (respuesta, "%s: eres bajo", nombre);
+				sprintf (respuesta, "3/%s: eres bajo", nombre);
 		}
 		else if (codigo == 4){
 			// quieren saber si el nombre es palindromo
@@ -86,19 +87,15 @@ void *AtenderCliente (void *socket)
 			}
 				
 			if(pal == 1)
-				strcpy (respuesta,"SI");
+				strcpy (respuesta,"4/SI");
 			else
-				strcpy (respuesta,"NO");
-		}
-		else if (codigo == 4)
-		{
-			sprintf (respuesta,"%d", contador);
+				strcpy (respuesta,"4/NO");
 		}
 		else{
 			for (int i = 0; nombre[i] != '\0';++i){
 				nombre[i] = toupper(nombre[i]);
 			}
-			sprintf (respuesta, "Ahora eres %s", nombre);
+			sprintf (respuesta, "5/Ahora eres %s", nombre);
 		}
 			
 		if (codigo != 0)
@@ -111,6 +108,14 @@ void *AtenderCliente (void *socket)
 			pthread_mutex_lock( &mutex ); //No me interrumpas ahora
 			contador=contador+1;
 			pthread_mutex_unlock( &mutex ); //Ya puedes interrumpir
+			// Notificar a todos los clientes conectados
+			char notificacion[20];
+			sprintf (notificacion, "6/%d", contador);
+			int j;
+			for (j=0; j<i; j++)
+			{
+				write (sockets[j],notificacion, strlen(notificacion));
+			}
 	}
 	// Se acabo el servicio para este cliente
 	close(sock_conn);
@@ -139,8 +144,6 @@ int main(int argc, char *argv[])
 		printf("Error en el Listen");
 	
 	contador =0;
-	int i;
-	int sockets[100];
 	pthread_t thread;
 	i=0;
 	// Bucle infinito

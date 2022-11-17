@@ -8,24 +8,73 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
         Socket server;
+        Thread atender;
         public Form1()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false;
+            // Necesario para que los elementos de los formularios puedan ser
+            // accedidos desde threads diferentes a los que los crearon.
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-           
+            
         }
 
-   
+        private void AtenderServidor()
+        {
+            while(true)
+            {
+                //Recibimos mensaje del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                string [] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+                int codigo = Convert.ToInt32(trozos[0]);
+                string mensaje = trozos[1].Split('\0')[0];
+
+                switch (codigo)
+                {
+                    case 1:  // respuesta a la longitud
+                        MessageBox.Show("La longitud de tu nombre es: " + mensaje);
+                        break;
+
+                    case 2:  // respuesta a si mi nombre es bonito
+                        if (mensaje == "SI")
+                            MessageBox.Show("Tu nombre ES bonito.");
+                        else
+                            MessageBox.Show("Tu nombre NO es bonito. Lo siento.");
+                        break;
+
+                    case 3: // respuesta  si es alto.
+                        MessageBox.Show(mensaje);
+                        break;
+
+                    case 4: // respuesta a si es un palindromo.
+                        if (mensaje == "SI")
+                            MessageBox.Show("Tu nombre ES un palíndromo.");
+                        else
+                            MessageBox.Show("Tu nombre NO es un palíndromo. Lo siento.");
+                        break;
+
+                    case 5: // respuesta al nombre en mayusculas.
+                        MessageBox.Show("Ahora eres " + mensaje);
+                        break;
+
+                    case 6: // recibimos notificacion.
+                        contLbl.Text = mensaje;
+                        break;
+                }
+            }
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
 
@@ -36,12 +85,6 @@ namespace WindowsFormsApplication1
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show("La longitud de tu nombre es: " + mensaje);
             }
             else if (Bonito.Checked)
             {
@@ -50,31 +93,17 @@ namespace WindowsFormsApplication1
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-
-                if (mensaje == "SI")
-                    MessageBox.Show("Tu nombre ES bonito.");
-                else
-                    MessageBox.Show("Tu nombre NO es bonito. Lo siento.");
             }
             else if (alto.Checked)
             {
-                // Enviamos nombre y altura
+
+                //Enviamos nombre y altura
                 string mensaje = "3/" + nombre.Text + "/" + alturaBox.Text;
-                // Enviamos al server el nombre tecleado
+                //Enviamos al server el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
 
-                // Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show(mensaje);
+
             }
             else if (palindromo.Checked)
             {
@@ -83,17 +112,6 @@ namespace WindowsFormsApplication1
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-
-                if (mensaje == "SI")
-                    MessageBox.Show("Tu nombre ES un palíndromo.");
-                else
-                    MessageBox.Show("Tu nombre NO es un palíndromo. Lo siento.");
             }
             else
             {
@@ -102,12 +120,6 @@ namespace WindowsFormsApplication1
                 // Enviamos al servidor el nombre tecleado
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show("Ahora eres " + mensaje);
             }
         }
 
@@ -133,6 +145,10 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("No he podido conectar con el servidor");
                 return;
             }
+
+            ThreadStart ts = delegate { AtenderServidor(); };
+            atender = new Thread(ts);
+            atender.Start();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -145,25 +161,10 @@ namespace WindowsFormsApplication1
 
             // Se terminó el servicio. 
             // Nos desconectamos
+            atender.Abort();
             this.BackColor = Color.Gray;
             server.Shutdown(SocketShutdown.Both);
             server.Close();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            // Pedir numero de servicios realizados
-            string mensaje = "6/";
-
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
-
-            //Recibimos la respuesta del servidor
-            byte[] msg2 = new byte[80];
-            server.Receive(msg2);
-            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-            contLbl.Text = mensaje;
-
         }
     }
 }

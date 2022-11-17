@@ -46,17 +46,24 @@ namespace ConversorCF
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // Mensaje de desconexión
-            string mensaje = "0/";
+            try
+            {
+                // Mensaje de desconexión
+                string mensaje = "0/";
 
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
 
-            // Se terminó el servicio. 
-            // Nos desconectamos
-            this.BackColor = Color.Gray;
-            server.Shutdown(SocketShutdown.Both);
-            server.Close();
+                // Se terminó el servicio. 
+                // Nos desconectamos
+                this.BackColor = Color.Gray;
+                server.Shutdown(SocketShutdown.Both);
+                server.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se ha podido ejecutar la acción, primero debe conectarse");
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -64,28 +71,44 @@ namespace ConversorCF
 
             string mensaje = "1/" + numeroBox.Text;
             // Enviamos al server el nombre tecleado
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
+            try
+            {
+                int num = Convert.ToInt32(numeroBox.Text);
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
 
-            // Recibimos la respuesta del servidor
-            byte[] msg2 = new byte[80];
-            server.Receive(msg2);
-            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-            MessageBox.Show(mensaje);
+                // Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                MessageBox.Show(mensaje);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Por favor, introduzca un numero.");
+            } 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             string mensaje = "2/" + numeroBox.Text;
             // Enviamos al server el nombre tecleado
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
+            try
+            {
+                int num = Convert.ToInt32(numeroBox.Text);
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
 
-            // Recibimos la respuesta del servidor
-            byte[] msg2 = new byte[80];
-            server.Receive(msg2);
-            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-            MessageBox.Show(mensaje);
+                // Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                MessageBox.Show(mensaje);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Por favor, introduzca un numero.");
+            }
         }
     }
 }

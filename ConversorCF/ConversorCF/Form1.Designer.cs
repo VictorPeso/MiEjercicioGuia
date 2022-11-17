@@ -30,13 +30,13 @@ namespace ConversorCF
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.numeroBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +53,43 @@ namespace ConversorCF
             this.panel1.Size = new System.Drawing.Size(452, 253);
             this.panel1.TabIndex = 0;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(187, 121);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(61, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Convertir a:";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(226, 137);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(86, 80);
+            this.button4.TabIndex = 3;
+            this.button4.Text = "Farenheit";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(126, 137);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(86, 80);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Ceslius";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // numeroBox
+            // 
+            this.numeroBox.Location = new System.Drawing.Point(126, 88);
+            this.numeroBox.Name = "numeroBox";
+            this.numeroBox.Size = new System.Drawing.Size(186, 20);
+            this.numeroBox.TabIndex = 1;
+            this.numeroBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -62,13 +99,6 @@ namespace ConversorCF
             this.label1.Size = new System.Drawing.Size(415, 33);
             this.label1.TabIndex = 0;
             this.label1.Text = "Conversor Celsius-Farenheit";
-            // 
-            // numeroBox
-            // 
-            this.numeroBox.Location = new System.Drawing.Point(126, 88);
-            this.numeroBox.Name = "numeroBox";
-            this.numeroBox.Size = new System.Drawing.Size(186, 20);
-            this.numeroBox.TabIndex = 1;
             // 
             // button1
             // 
@@ -89,35 +119,6 @@ namespace ConversorCF
             this.button2.Text = "Desconectar";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(126, 137);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(86, 80);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Ceslius";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(226, 137);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(86, 80);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Farenheit";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(187, 121);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Convertir a:";
             // 
             // Form1
             // 
